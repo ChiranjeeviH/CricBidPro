@@ -24,6 +24,8 @@ public class CricHeroSearchScraperController {
 
     private final CricHeroSearchScraper cricHeroSearchScraper;
 
+  private static String API_ENDPOINT = "https://cricheroes.in/api/v1/other/global-search/";	
+
     public CricHeroSearchScraperController(CricHeroSearchScraper cricHeroSearchScraper) {
         this.cricHeroSearchScraper = cricHeroSearchScraper;
     }
@@ -33,7 +35,7 @@ public class CricHeroSearchScraperController {
         return cricHeroSearchScraper.getMainpageResponse();
     }
 
-    private static String API_ENDPOINT = "https://cricheroes.in/api/v1/other/global-search/";
+   
 
 	@GetMapping("/callApi/{search}")
 	public String callApi(@PathVariable String search) throws IOException, InterruptedException {
