@@ -1,11 +1,11 @@
 package com.auctioneer.controller;
 
-import com.auctioneer.service.CricHeroSearchScraper;
+import com.auctioneer.entity.Player;
+import com.auctioneer.service.PlayerScaperService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import reactor.core.publisher.Mono;
 
 import java.io.IOException;
 import java.net.URI;
@@ -19,20 +19,20 @@ import java.nio.charset.StandardCharsets;
 @RestController
 @RequestMapping("/scrapper")
 public class CricHeroSearchScraperController {
-	private final CricHeroSearchScraper cricHeroSearchScraper;
+	private final PlayerScaperService playerScaperService;
 
   private final String API_ENDPOINT = "https://cricheroes.in/api/v1/other/global-search/";
 
-    public CricHeroSearchScraperController(CricHeroSearchScraper cricHeroSearchScraper) {
-        this.cricHeroSearchScraper = cricHeroSearchScraper;
+    public CricHeroSearchScraperController(PlayerScaperService playerScaperService) {
+        this.playerScaperService = playerScaperService;
     }
 
     @GetMapping("/fetchuserinfo/{cricheroName}")
-    public Mono<String> fetchDataFromURL(@PathVariable String cricheroName) {
-        return cricHeroSearchScraper.getUserInfo(cricheroName);
+    public Player fetchDataFromURL(@PathVariable String cricheroName) {
+        return playerScaperService.getCricHeroInfo(cricheroName);
     }
 
-   
+
 
 	@GetMapping("/callApi/{search}")
 	public String callApi(@PathVariable String search) throws IOException, InterruptedException {
