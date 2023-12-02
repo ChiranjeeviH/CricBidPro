@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
-import reactor.core.publisher.Mono;
 
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
@@ -16,7 +15,7 @@ public class CricHeroSearchScraperService {
     private final static String BASEURL = "https://cricheroes.in/";
     private final static String GLOBAL_SEARCH="api/v1/other/global-search/";
 
-    private final static String PLAYER_PROFILE="player-profile";
+    private final static String PLAYER_PROFILE="api/v1/player/get-player-statistic/";
 
     @Autowired
     public CricHeroSearchScraperService(WebClient.Builder webClientBuilder) {
@@ -38,10 +37,15 @@ public class CricHeroSearchScraperService {
         return getRequest(searchEndpoint);
     }
 
-    public Mono<String> getUserFullProfile(String cricheroName){
+    public String getUserStats(String playerId){
+        String playerProfileEndPoint = PLAYER_PROFILE+playerId;
 
-        return null;
+        return getRequest(playerProfileEndPoint);
     }
+
+   /* public String getFullPlayerProfile(String cricheroName){
+
+    }*/
 
     private HttpHeaders buildCustomHeaders() {
         HttpHeaders headers = new HttpHeaders();

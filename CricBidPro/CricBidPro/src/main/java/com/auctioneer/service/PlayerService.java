@@ -1,6 +1,6 @@
 package com.auctioneer.service;
 
-import com.auctioneer.entity.Player;
+import com.auctioneer.entity.PlayerEntity;
 import com.auctioneer.repository.PlayerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,16 +16,20 @@ public class PlayerService {
         this.playerRepository = playerRepository;
     }
 
-    public Player savePlayer(Player player) {
+    public PlayerEntity savePlayer(PlayerEntity player) {
         return playerRepository.save(player);
     }
 
-    public List<Player> getAllPlayers() {
+    public List<PlayerEntity> getAllPlayers() {
         return playerRepository.findAll();
     }
 
-    public Player getPlayer(Long userId){
-        return playerRepository.findByUserId(userId);
+    public PlayerEntity getPlayer(Long userId){
+        return playerRepository.findByPlayerId(userId);
     }
-    // Other service methods
+
+    public PlayerEntity getPlayerByExactName(String name){
+        return playerRepository.findByName(name);
+    }
+
 }

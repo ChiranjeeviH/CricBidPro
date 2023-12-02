@@ -6,7 +6,7 @@ import lombok.Data;
 @Entity
 @Table(name = "players")
 @Data
-public class Player {
+public class PlayerEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -14,7 +14,7 @@ public class Player {
     @Override
     public String toString() {
         return "Player{" +
-                "userId=" + userId +
+                "userId=" + playerId +
                 ", name='" + name + '\'' +
                 ", city='" + city + '\'' +
                 ", playingRole='" + playingRole + '\'' +
@@ -22,9 +22,21 @@ public class Player {
                 '}';
     }
 
-    private long userId;
+    private long playerId;
     private String name;
     private String city;
     private String playingRole;
     private String playerSkill;
+
+  /*  @OneToOne(mappedBy = "player")
+    private BattingStatisticsEntity battingStatistics;
+
+    @OneToOne(mappedBy = "player")
+    private BowlingStatisticsEntity bowlingStatistics;
+
+    @OneToOne(mappedBy = "player")
+    private FieldingStatisticsEntity fieldingStatistics;
+
+    @OneToOne(mappedBy = "player")
+    private CaptainStatisticsEntity captainStatistics;*/
 }

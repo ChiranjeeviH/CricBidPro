@@ -1,12 +1,14 @@
 package com.auctioneer.repository;
 
-import com.auctioneer.entity.Player;
+import com.auctioneer.entity.PlayerEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface PlayerRepository extends JpaRepository<Player, Long> {
+public interface PlayerRepository extends JpaRepository<PlayerEntity, Long> {
     // Define custom query methods if needed
 
-    Player findByUserId(long userid);
+    PlayerEntity findByPlayerId(long userid);
+
+    PlayerEntity findByName(String name);
 }
