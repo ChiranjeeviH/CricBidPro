@@ -21,6 +21,5 @@ public class FieldingStatisticsEntity {
     private String value;
     private int isUserProperty;
 
-    // Other fields and relationships as needed
 }
 

@@ -20,10 +20,10 @@ import java.nio.charset.StandardCharsets;
 @RestController
 @RequestMapping("/scrapper")
 @Log4j2
-public class CricHeroSearchScraperController {
+public class PlayerSearchController {
     private final PlayerScaperService playerScaperService;
 
-    public CricHeroSearchScraperController(PlayerScaperService playerScaperService) {
+    public PlayerSearchController(PlayerScaperService playerScaperService) {
         this.playerScaperService = playerScaperService;
     }
 

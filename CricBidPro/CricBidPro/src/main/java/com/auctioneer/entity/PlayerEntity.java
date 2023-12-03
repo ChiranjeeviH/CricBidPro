@@ -1,6 +1,7 @@
 package com.auctioneer.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
 @Entity
@@ -22,21 +23,11 @@ public class PlayerEntity {
                 '}';
     }
 
+    @NotBlank(message = "Player id mandatory")
     private long playerId;
     private String name;
     private String city;
     private String playingRole;
     private String playerSkill;
 
-  /*  @OneToOne(mappedBy = "player")
-    private BattingStatisticsEntity battingStatistics;
-
-    @OneToOne(mappedBy = "player")
-    private BowlingStatisticsEntity bowlingStatistics;
-
-    @OneToOne(mappedBy = "player")
-    private FieldingStatisticsEntity fieldingStatistics;
-
-    @OneToOne(mappedBy = "player")
-    private CaptainStatisticsEntity captainStatistics;*/
 }

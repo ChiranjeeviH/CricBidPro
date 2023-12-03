@@ -9,7 +9,7 @@ import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 
 @Service
-public class CricHeroSearchScraperService {
+public class ScraperService {
     private final WebClient webClient;
 
     private final static String BASEURL = "https://cricheroes.in/";
@@ -18,7 +18,7 @@ public class CricHeroSearchScraperService {
     private final static String PLAYER_PROFILE="api/v1/player/get-player-statistic/";
 
     @Autowired
-    public CricHeroSearchScraperService(WebClient.Builder webClientBuilder) {
+    public ScraperService(WebClient.Builder webClientBuilder) {
         this.webClient = webClientBuilder.baseUrl(BASEURL).build();
     }
 
@@ -43,9 +43,6 @@ public class CricHeroSearchScraperService {
         return getRequest(playerProfileEndPoint);
     }
 
-   /* public String getFullPlayerProfile(String cricheroName){
-
-    }*/
 
     private HttpHeaders buildCustomHeaders() {
         HttpHeaders headers = new HttpHeaders();

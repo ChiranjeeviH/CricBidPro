@@ -14,16 +14,16 @@ import java.util.Objects;
 @Log4j2
 public class PlayerScaperService {
 
-    private final CricHeroSearchScraperService cricHeroSearchScraperService;
+    private final ScraperService scraperService;
     private final PlayerService playerService;
     private final PlayerStatsService playerStatsService;
     private final PlayerMapper playerMapper = PlayerMapper.PLAYER_INSTANCE;
     private final ObjectMapper objectMapper = new ObjectMapper();
 
-    public PlayerScaperService(CricHeroSearchScraperService cricHeroSearchScraperService,
+    public PlayerScaperService(ScraperService scraperService,
                                PlayerService playerService,
                                PlayerStatsService playerStatsService) {
-        this.cricHeroSearchScraperService = cricHeroSearchScraperService;
+        this.scraperService = scraperService;
         this.playerService = playerService;
         this.playerStatsService = playerStatsService;
     }
@@ -34,7 +34,7 @@ public class PlayerScaperService {
 
     public String getPlayerFullProfile(String playerName) {
         PlayerEntity playerEntity = fetchOrCreatePlayer(playerName);
-        String response = cricHeroSearchScraperService.getUserStats(String.valueOf(playerEntity.getPlayerId()));
+        String response = scraperService.getUserStats(String.valueOf(playerEntity.getPlayerId()));
         playerStatsService.savePlayerStats(response,playerEntity);
         return response;
     }
@@ -44,7 +44,7 @@ public class PlayerScaperService {
 
         if (currentPlayer == null) {
             log.info("User doesn't exist in the database, scraping CricHero's website");
-            String response = cricHeroSearchScraperService.getUserInfo(cricHeroName);
+            String response = scraperService.getUserInfo(cricHeroName);
 
             if (Objects.nonNull(response)) {
                 currentPlayer = createAndSavePlayerFromResponse(response);
