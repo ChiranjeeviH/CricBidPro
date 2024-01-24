@@ -5,5 +5,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface BattingRepository extends JpaRepository<BattingStatisticsEntity, Long> {
+public interface BattingRepository extends BaseStatisticsRepository {
 }

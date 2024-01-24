@@ -2,10 +2,7 @@ package com.auctioneer.service;
 
 import com.auctioneer.entity.*;
 import com.auctioneer.json.PlayerStats;
-import com.auctioneer.repository.BattingRepository;
-import com.auctioneer.repository.BowlingRepository;
-import com.auctioneer.repository.CaptainRepository;
-import com.auctioneer.repository.FieldingRepository;
+import com.auctioneer.repository.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -25,16 +22,19 @@ public class PlayerStatsService {
     private final FieldingRepository fieldingRepository;
     private final CaptainRepository captainRepository;
 
+    private final BaseStatisticsRepository baseStatisticsRepository;
+
     public PlayerStatsService(ObjectMapper objectMapper,
                               BattingRepository battingRepository,
                               BowlingRepository bowlingRepository,
                               FieldingRepository fieldingRepository,
-                              CaptainRepository captainRepository) {
+                              CaptainRepository captainRepository, BaseStatisticsRepository baseStatisticsRepository) {
         this.objectMapper = objectMapper;
         this.battingRepository = battingRepository;
         this.bowlingRepository = bowlingRepository;
         this.fieldingRepository = fieldingRepository;
         this.captainRepository = captainRepository;
+        this.baseStatisticsRepository = baseStatisticsRepository;
     }
 
     public void savePlayerStats(String json, PlayerEntity player) {
@@ -93,6 +93,11 @@ public class PlayerStatsService {
         entity.setIsUserProperty(entry.getIsUserProperty());
         entity.setPlayer(player);
         return entity;
+    }
+
+    public List<BaseStatisticsEntity> getPlayerStats(PlayerEntity playerEntity) {
+
+        return baseStatisticsRepository.findByPlayer(playerEntity);
     }
 
 }

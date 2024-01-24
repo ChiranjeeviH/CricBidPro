@@ -1,6 +1,8 @@
 package com.auctioneer.service;
 
+import com.auctioneer.entity.BaseStatisticsEntity;
 import com.auctioneer.entity.PlayerEntity;
+import com.auctioneer.entity.PlayerInfoWithStatsResponse;
 import com.auctioneer.json.PlayerInfo;
 import com.auctioneer.mapper.PlayerMapper;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -8,6 +10,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
 import java.util.Objects;
 
 @Component
@@ -32,11 +35,25 @@ public class PlayerScaperService {
         return fetchOrCreatePlayer(playerName);
     }
 
-    public String getPlayerFullProfile(String playerName) {
+    public PlayerInfoWithStatsResponse getPlayerFullProfile(String playerName) {
         PlayerEntity playerEntity = fetchOrCreatePlayer(playerName);
-        String response = scraperService.getUserStats(String.valueOf(playerEntity.getPlayerId()));
-        playerStatsService.savePlayerStats(response,playerEntity);
+        List<BaseStatisticsEntity> stats = getStatsForPlayer(playerEntity);
+
+        if (stats.isEmpty()) {
+            scrapeAndSavePlayerStatsInfo(playerName);
+            playerEntity = fetchOrCreatePlayer(playerName);
+            stats = getStatsForPlayer(playerEntity);
+        }
+
+        PlayerInfoWithStatsResponse response = new PlayerInfoWithStatsResponse();
+        response.setPlayerEntity(playerEntity);
+        response.setStatistics(stats);
+
         return response;
+    }
+
+    private List<BaseStatisticsEntity> getStatsForPlayer(PlayerEntity playerEntity) {
+        return playerStatsService.getPlayerStats(playerEntity);
     }
 
     private PlayerEntity fetchOrCreatePlayer(String cricHeroName) {
@@ -78,5 +95,18 @@ public class PlayerScaperService {
             }
         }
         return currentPlayer;
+    }
+
+    private void scrapeAndSavePlayerStatsInfo(String cricHeroName) {
+        PlayerEntity currentPlayer = playerService.getPlayerByExactName(cricHeroName);
+
+        if (currentPlayer == null) {
+            log.info("User doesn't exist in the database, scraping CricHero's website");
+            String response = scraperService.getUserInfo(cricHeroName);
+
+            if (Objects.nonNull(response)) {
+                createAndSavePlayerFromResponse(response);
+            }
+        }
     }
 }
