@@ -37,6 +37,10 @@ public class PlayerScaperService {
 
     public PlayerInfoWithStatsResponse getPlayerFullProfile(String playerName) {
         PlayerEntity playerEntity = fetchOrCreatePlayer(playerName);
+        if(Objects.isNull(playerEntity)){
+            log.info("Player profile doesn't exist");
+            return null;
+        }
         List<BaseStatisticsEntity> stats = getStatsForPlayer(playerEntity);
 
         if (stats.isEmpty()) {

@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class PlayerService {
@@ -30,6 +31,12 @@ public class PlayerService {
 
     public PlayerEntity getPlayerByExactName(String name){
         return playerRepository.findByName(name);
+    }
+
+    public List<String> getAllPlayerNames(String profile) {
+
+        return profile.isBlank() ? playerRepository.findAll().stream().map(PlayerEntity::getName).collect(Collectors.toList())
+                : playerRepository.findAll().stream().filter(emp -> emp.getPlayerSkill().equals(profile)).map(PlayerEntity::getName).collect(Collectors.toList());
     }
 
 }
